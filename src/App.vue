@@ -1,20 +1,5 @@
 <template>
   <div id="app">
-    Cat Browser
+    <router-view></router-view>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'app',
-  data () {
-    return {
-
-    }
-  }
-}
-</script>
-
-<style>
-
-</style>
