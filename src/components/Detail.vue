@@ -1,20 +1,22 @@
 <template>
   <div class="container">
     <div class="py-3">
-      <div class="card">
-        <div class="card-header">
-          <a class="btn btn-primary" :href="'/?breed=' + breed.id">
-            Back
-          </a>
-        </div>
-        <img class="card-img" :src="cat.url">
-        <div class="card-body">
-          <h4>{{ this.breed.name }}</h4>
-          <h5>Origin: {{ this.breed.origin }}</h5>
-          <h6>{{ this.breed.temperament }}</h6>
-          <p>{{ this.breed.description }}</p>
-        </div>
-      </div>
+      <b-card no-body>
+          <template v-slot:header>
+            <router-link class="btn btn-primary" :to="'/?breed=' + breed.id">
+              Back
+            </router-link>
+          </template>
+          <b-card-img v-bind:src="cat.url"></b-card-img>
+          <b-card-body>
+            <b-card-title>{{ this.breed.name }}</b-card-title>
+            <b-card-text>
+              <h5>Origin: {{ this.breed.origin }}</h5>
+              <h6>{{ this.breed.temperament }}</h6>
+              <p>{{ this.breed.description }}</p>
+            </b-card-text>
+          </b-card-body>
+      </b-card>
     </div>
   </div>
 </template>
