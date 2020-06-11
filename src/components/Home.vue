@@ -1,31 +1,23 @@
 <template>
   <div class="container">
     <div class="row py-3">
-      <div class="col">
+      <div class="col pr-0">
         <h1>Cat Browser</h1>
       </div>
-      <div class="col">
+      <div class="col pl-0">
         <div class="form-group float-right">
-          <select id="breed-select" class="form-control" v-model="breed.selected" @change="displayImages()">
-            <option value=""> Select Breed </option>
-            <option v-for="breed in breed.list" v-bind:value="breed.id">
-              {{ breed.name }}
-            </option>
-          </select>
+          <b-form-select v-model="breed.selected" :options="breed.list" @change="displayImages()"></b-form-select>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-12 text-center" v-if="images.display.length === 0">No cats available</div>
       <div class="col-md-3 col-sm-6 col-12 py-2" v-for="object in images.display"  v-else>
-        <div class="card">
-          <img class="card-img-top" v-bind:src="object.url">
-          <div class="card-body">
-            <router-link class="btn btn-primary btn-block" :to="object.id">
-              View details
-            </router-link>
-          </div>
-        </div>
+        <b-card v-bind:img-src="object.url" img-top>
+          <router-link class="btn btn-primary btn-block" :to="object.id">
+            View details
+          </router-link>
+        </b-card>
       </div>
     </div>
     <div class="row py-3 justify-content-center" v-if="images.hasMore">
@@ -42,7 +34,9 @@
 <style>
 
 </style>
-
+  #breed-select {
+    width: 200px;
+  }
 <script>
   export default {
     data() {
@@ -53,7 +47,9 @@
           page: 1
         },
         breed: {
-          list: [],
+          list: [
+            { value: '', text: 'Select Breed'}
+          ],
           selected: '',
         },
         images: {
@@ -134,7 +130,16 @@
 
     mounted() {
       this.$axios.get('https://api.thecatapi.com/v1/breeds')
-        .then(response => this.breed.list = response.data);
+        .then(response => {
+          response.data.forEach(item => {
+            let option = {};
+
+            option.value = item.id;
+            option.text = item.name;
+
+            this.breed.list.push(option);
+          });
+        });
 
       // Capture breed type data passed from detail page and preload corresponding images
       let param = this.$route.query.breed;
